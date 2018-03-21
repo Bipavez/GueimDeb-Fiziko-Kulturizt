@@ -1,0 +1,1 @@
+El juego se va a tratar de """, en donde el jugador es """ y """

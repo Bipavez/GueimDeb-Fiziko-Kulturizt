@@ -1,0 +1,6 @@
+Punteo de ideas para el juego:
+
+Batallas:
+  - Estilo pókemon(con turnos)
+
+  - Estilo pókemon(sin turnos)
