@@ -4,3 +4,23 @@ Batallas:
   - Estilo pókemon(con turnos)
 
   - Estilo pókemon(sin turnos)
+B: Me gustaria un mundo base o explorable que sea estático (quizás cavernas o instancias sean estilo Dwarf Fortress)
+Sea como una historia (linear o no) (multiple endings(because why not))
+Sobre todo siento que no hay que apresurarnos en como, el desarrollo bc games take time.
+Como le dije al ricardo me gustaria como un POV desde arriba para algunas instancias, e instancias en donde se juega pero con la camara apuntando transversal al PJ. Eh, no sé 2D siento que es mas posible y más bonito (artisticamente)
+
+R: Mira, a la gente que juega RPG le gusta coleccionar (no por nada Pokémon es tan famoso) y "desbloquear" poderes (como en Final Fantasy o Persona) o personajes (como aquellos donde reclutas como loco), cada uno mejor que el anterior. Mi idea es que podemos hacer un RPG donde el protagonista tenga el poder de comunicarse con ciertos entes sobrenaturales en las batallas, que va "reclutando" a lo largo del juego, para hacer determinados ataques (bastante típico).
+
+Además, podríamos hacer que la historia gire en torno a estos entes sobrenaturales (como por ejemplo, que quieran destruir el mundo, etc etc etc)
+O quizás no comunicarse con entes, pero sí adquirir, al menos, habilidades nuevas
+Y también, podemos hacer un RPG que no sea puro "atacar-dejar que te ataquen", sino que podemos hacerlo como los Mario y Luigi o Paper Mario, en donde puedes esquivar ataques mediante oprimir los botones correctos en el instante correcto.
+
+Lo mismo con atacar: el golpe que hagas mejoras si, por ejemplo, oprimes A justo a tiempo.
+
+Si hacemos un RPG, mi idea es que sea así de dinámico
+También sería bacán hacer los mapas en 3D, pero no ese 3D exagerado de los videojuegos de hoy en día, sino que con 3D me refiero a que los mapas tengan un poco de "perspectiva", pero que no puedas hacer esa típica vista 360°
+
+Y los personajes (todo lo que no sea mapa) sería sprites, imágenes comunes y corrientes dn 2D
+
+P:Con lo de 2D estoy de acuerdo, y en verdad hacer un mundo no estático debe ser bastante más difícil. Por último es algo que se puede implementar después. Pensaba eso sí  que un mundo tipo Dwarf Fortress sería interesante, no respecto a lo Sandbox, sino al estilo de movimiento: Plano, en 2D, pero con harto énfasis en las diferentes profundidades
+Igual podemos empezar construyendo un sistema de batalla simple, y después lo podemos complejizar de acuerdo a la historia/mundo que ya tengamos
