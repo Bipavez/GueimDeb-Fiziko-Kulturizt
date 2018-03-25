@@ -31,7 +31,7 @@ TERRAIN = 4
 
 class Sprite(objects.VisibleObject):
    """Class for moving, animated sprites."""
-   
+
    def __init__(self, node, mMap, position=None, level=None):
       """
       aa
@@ -108,7 +108,7 @@ class Sprite(objects.VisibleObject):
             #check for a switch move permission
             #action is got by taking the permission mod 8
             col = self.map.getCollisionData(self.position)
-            action = col%8 
+            action = col%8
             if action == SWITCH:
                self.switch = True
             else:
@@ -125,7 +125,7 @@ class Sprite(objects.VisibleObject):
             #no longer busy
             self.busy = False
 
-      #tick the Visible Object (deals with animations)      
+      #tick the Visible Object (deals with animations)
       objects.VisibleObject.tick(self)
 
    def getTile(self):
@@ -186,7 +186,7 @@ class Sprite(objects.VisibleObject):
          else:
             return False
 
-      #if it's a block, we can't move to it   
+      #if it's a block, we can't move to it
       elif action == BLOCK:
          return False
 
@@ -287,10 +287,10 @@ class Sprite(objects.VisibleObject):
 
    def lock(self):
       """Lock the sprite."""
-      
+
       self.locked = True
 
    def unlock(self):
       """Unlock the sprite."""
-      
+
       self.locked = False

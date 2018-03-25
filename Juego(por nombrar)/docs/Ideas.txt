@@ -24,3 +24,12 @@ Y los personajes (todo lo que no sea mapa) sería sprites, imágenes comunes y c
 
 P:Con lo de 2D estoy de acuerdo, y en verdad hacer un mundo no estático debe ser bastante más difícil. Por último es algo que se puede implementar después. Pensaba eso sí  que un mundo tipo Dwarf Fortress sería interesante, no respecto a lo Sandbox, sino al estilo de movimiento: Plano, en 2D, pero con harto énfasis en las diferentes profundidades
 Igual podemos empezar construyendo un sistema de batalla simple, y después lo podemos complejizar de acuerdo a la historia/mundo que ya tengamos
+
+concepto historia:
+  entes poseen personar y se vuelven agresivos (hacer la historia alrededor de eso), pueden deformar la realidad(estilo Breath of the Wild).
+
+historia estructural:
+  capitulo
+
+batalla ideas:
+  pelear con entes o dioses, estos se llaman cada turno para bendecir o ayudar o atacar o proteger
