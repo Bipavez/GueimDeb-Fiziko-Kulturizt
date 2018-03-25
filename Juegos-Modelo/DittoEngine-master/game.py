@@ -20,7 +20,7 @@ import script_engine
 
 class Game(scene.Scene):
    """Class to manage the main game world."""
-   
+
    def __init__(self, screen, savegame=None):
       """
       Open the save file (or make a new one) and create camera and script engine.
@@ -91,7 +91,7 @@ class Game(scene.Scene):
                self.foregroundObject = pause_menu.PauseMenu(self.screen, self, os.path.join(settings.path, "data", self.menuPath))
             elif key == game_input.BT_DEBUG:
                pass
-               
+
          for key in self.keysJustReleased:
             if key == game_input.BT_B:
                self.player.speed = 1
@@ -117,12 +117,12 @@ class Game(scene.Scene):
             self.foregroundObject = None
             self.paused = False
 
-      #if we're not paused, tick the script engine and map      
+      #if we're not paused, tick the script engine and map
       if not self.paused:
          self.scriptEngine.tick()
          self.player.map.tick()
 
-      #we've not been told to exit, so not done yet   
+      #we've not been told to exit, so not done yet
       done = False
       return done
 
@@ -181,7 +181,7 @@ class Game(scene.Scene):
       except IOError:
          raise error.DittoIOException("Ditto main", fn)
 
-      print "Game saved to " + self.savegame.fn
+      print("Game saved to " + self.savegame.fn)
 
    def newGame(self, fn, root):
       """Start a new game"""
@@ -208,4 +208,3 @@ class Game(scene.Scene):
       if script is not None:
          s = script_engine.Script(script)
          self.scriptEngine.run(s)
-      

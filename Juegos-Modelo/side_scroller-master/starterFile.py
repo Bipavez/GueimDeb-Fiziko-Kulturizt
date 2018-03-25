@@ -55,7 +55,7 @@ class player(object):
                 self.runCount = 0
             win.blit(self.slide[self.slideCount//10], (self.x,self.y))
             self.slideCount += 1
-            
+
         else:
             if self.runCount > 42:
                 self.runCount = 0
