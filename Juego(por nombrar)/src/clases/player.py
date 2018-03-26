@@ -1,24 +1,40 @@
 import pygame
 from pygame import sprite
+from pygame.locals import *
 import glob
 from itertools import cycle
+import threading
+import sys, os
+import time
 
-window_up = 640
-window_len = 1080
-class Player(pygame.sprite.Sprite):
-    def __init__(self,win_h  ,win_l ,img_pth = "player",speed  = 1, width = 64, height = 64):
-        super(Player, self).__init__()
+window_up = 1080
+window_len = 1920
+class Player_Sprite(pygame.sprite.Sprite):
+    def __init__(self,win_h  ,win_l ,img_pth = "player",speed  = 1
+                 , width = 64, height = 64, animation_speed = 3.5):
+        """Clase para jugadores,  y posiblemente NPCs,
+           img_pth es el nombre inicial de los archivos que contienen las animaciones,
+           así es facil inicializar los personajes,  speed se refiere a la velocidad
+           con la cual el personaje avanza, 1 es bastante rápido, cambiar a futuro;
+           animation_speed es la velocidad de las animaciones(por ahora de mov),
+           esta se comporta como 1/x y es más rápida a la mayor cantidad."""
+        super().__init__()
+        self.animation_speed = int(100/animation_speed) if animation_speed != 0 else 23
         self.speed = speed
-        self.animation_list = {"WALK_U":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_walk_u*".format(img_pth))],
-                         "WALK_D":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_walk_d*".format(img_pth))],
-                         "WALK_L":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_walk_l*".format(img_pth))],
-                         "WALK_R":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_walk_r*".format(img_pth))]
-                         }
+        self.animation_list = {"WALK_U":[pygame.image.load(ld_img) for
+                               ld_img in glob.glob("animations/{}_walk_u*".format(img_pth))],
+                               "WALK_D":[pygame.image.load(ld_img) for
+                               ld_img in glob.glob("animations/{}_walk_d*".format(img_pth))],
+                               "WALK_L":[pygame.image.load(ld_img) for
+                               ld_img in glob.glob("animations/{}_walk_l*".format(img_pth))],
+                               "WALK_R":[pygame.image.load(ld_img) for
+                               ld_img in glob.glob("animations/{}_walk_r*".format(img_pth))]
+                              }
         self.animations = {"WALK_D":cycle(self.animation_list["WALK_D"]),
                            "WALK_U":cycle(self.animation_list["WALK_U"]),
                            "WALK_L":cycle(self.animation_list["WALK_L"]),
                            "WALK_R":cycle(self.animation_list["WALK_R"])
-                           }
+                          }
         self.__image = next(self.animations["WALK_D"])
         self.distanceMoved = [0,0]
         self.win_l = win_l
@@ -26,10 +42,8 @@ class Player(pygame.sprite.Sprite):
         self.y = 0
         self.x = 0
         self.going = ""
-
-    @property
-    def rect(self):
-        return self.__image.get_rect()
+        self.rect = self.image.get_rect()
+        self.set_position((win_l/2, win_h/2))
     @property
     def image(self):
         if self.going == "l" and self.__image not in self.animation_list["WALK_L"]:
@@ -44,14 +58,14 @@ class Player(pygame.sprite.Sprite):
         if self.going == "d" and self.__image not in self.animation_list["WALK_D"]:
             self.__image = self.animation_list["WALK_D"][0]
 
-        if (self.distanceMoved[1] % 23 == 0 and self.distanceMoved[1] != 0):
+        if (self.distanceMoved[1] % self.animation_speed == 0 and self.distanceMoved[1] != 0):
             if self.distanceMoved[1] < 0:
                 self.distanceMoved[1] = -1
                 self.__image = next(self.animations["WALK_L"])
             elif self.distanceMoved[1] > 0:
                 self.distanceMoved[1] = 1
                 self.__image = next(self.animations["WALK_R"])
-        if (self.distanceMoved[0] % 23 == 0 and self.distanceMoved[0] != 0):
+        if (self.distanceMoved[0] % self.animation_speed == 0 and self.distanceMoved[0] != 0):
             if self.distanceMoved[0] < 0:
                 self.distanceMoved[0] = -1
                 self.__image = next(self.animations["WALK_U"])
@@ -62,77 +76,118 @@ class Player(pygame.sprite.Sprite):
         else:
             pass
         return self.__image
-
-    def handle_keys(self):
+    def set_position(self, coords):
+        self.x,self.y = coords[0], coords[1]
+        self.rect.x,self.rect.y = self.x, self.y
+    def handle_keys(self): #como se manejan las acciones, en un futuro añadir ataque y defensa
         key = pygame.key.get_pressed()
+
         vel = self.speed
         if key[pygame.K_DOWN] or key[pygame.K_UP]:
             if key[pygame.K_DOWN]:
                 self.going = "d"
-                if self.y <= self.win_h:
-                    self.distanceMoved[0] += vel # down key
-                    self.y += vel
-                     # move dow
+                if self.rect.y <= self.win_h:
+                    self.distanceMoved[0] += vel #
+                    self.rect.move_ip(0,vel)
                 else:
                     self.distanceMoved[0] = 0
-                    self.y = self.win_h-2
             if key[pygame.K_UP]:
                 self.going = "u"
-
-
-                if self.y >= 0:# up key
+                if self.rect.y >= 0:# up key
                     self.distanceMoved[0] -= vel
-                    self.y -= vel # move up
+                    self.rect.move_ip(0, -vel) # move up
                 else:
                     self.distanceMoved[0] = 0
-                    self.y = 2
         elif key[pygame.K_LEFT] or key[pygame.K_RIGHT]:
             if key[pygame.K_RIGHT]:
                 self.going = "r"
-
-                if self.x <= self.win_l: # right key
+                if self.rect.x <= self.win_l: # right key
                     self.distanceMoved[1] += vel
-                    self.x += vel # move right
-                else:
-
-                    self.x = self.win_l-2
-            if key[pygame.K_LEFT]:
-                self.going = "l"
-
-
-                if self.x >= 0: # left key
-                    self.distanceMoved[1] -= 1
-                    self.x -= vel # move left
+                    self.rect.move_ip(vel,0) # move right
                 else:
                     self.distanceMoved[1] = 0
-                    self.x = 2
+            if key[pygame.K_LEFT]:
+                self.going = "l"
+                if self.rect.x >= 0: # left key
+                    self.distanceMoved[1] -= 1
+                    self.rect.move_ip(-vel,0) # move left
+                else:
+                    self.distanceMoved[1] = 0
+    def update(self):
+        self.handle_keys()
+class Equipment(pygame.sprite.Sprite):
+    def __init__(self, img_pth, parent):
+        super().__init__()
+        self.animation_list = {"BALL_MOVE":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_**".format(img_pth))]}
+        self.animations = {"BALL_MOVE":cycle(self.animation_list["BALL_MOVE"])}
+        self.__image = next(self.animations["BALL_MOVE"])
+        print(self.animation_list)
+        self.parent = parent
+        self.__animation_count = 0
+        self.rect = self.image.get_rect()
 
 
+    @property
+    def animation_count(self):
+        self.__animation_count += 1
+        return self.__animation_count
 
-    def draw(self, surface):
-        """ Draw on surface """
-        # blit yourself at your current position
-        surface.blit(self.image, (self.x, self.y))
+
+    @property
+    def image(self):
+        if self.animation_count % 50 == 0 and self.animation_count != 0:
+            self.__animation_count = 1
+            self.__image = next(self.animations["BALL_MOVE"])
+            return self.__image
+        else:
+            return self.__image
+    def update(self):
+        self.rect.x = self.parent.rect.x - 20
+        self.rect.y = self.parent.rect.y - 20
+
 pygame.init()
-screen = pygame.display.set_mode((window_len, window_up))
-
-PJ = Player(window_up-64, window_len-50) # create an instance
+screen = pygame.display.set_mode((window_len, window_up), RESIZABLE | FULLSCREEN)
+PJ = Player_Sprite(window_up-64, window_len-50)
+Ball = Equipment("ball", PJ) # create an instance
 clock = pygame.time.Clock()
 KEYESC = pygame.K_q
 running = True
-
+Keys = set([pygame.K_DOWN, pygame.K_UP, pygame.K_RIGHT, pygame.K_LEFT])
+G = pygame.sprite.Group()
+G.add(PJ)
+G.add(Ball)
 while running:
     # handle every event since the last frame.
     for event in pygame.event.get():
-
-        if event.type == pygame.QUIT or event.type == KEYESC:
+        print(event)
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
             pygame.quit() # quit the screen
             running = False
+        if event.type == pygame.QUIT or event.type == KEYESC:
+                pygame.quit() # quit the screen
+                running = False
+        if pygame.key.get_pressed()[pygame.K_f]:
+            if "1920" in str(pygame.display.Info()):
+                window_up = 900
+                window_len = 1600
+                screen = pygame.transform.scale(screen, (window_len, window_up))
+                pygame.display.set_mode((window_len,window_up), RESIZABLE)
+            else:
+                window_up = 1080
+                window_len = 1920
+                screen = pygame.transform.scale(screen, (window_len, window_up))
+                pygame.display.set_mode((window_len,window_up), RESIZABLE | FULLSCREEN)
 
-    PJ.handle_keys() # handle the keys
+
+
+
+
+    G.update()
+     # handle the keys
     screen.fill((255,255,255))
      # fill the screen with white
-    PJ.draw(screen) # draw the bird to the screen
+     # draw the bird to the screen
+    G.draw(screen)
     pygame.display.update() # update the screen
 
     clock.tick(500)
