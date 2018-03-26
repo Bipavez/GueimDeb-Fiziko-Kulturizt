@@ -48,16 +48,12 @@ class Player_Sprite(pygame.sprite.Sprite):
     def image(self):
         if self.going == "l" and self.__image not in self.animation_list["WALK_L"]:
             self.__image = self.animation_list["WALK_L"][0]
-
         if self.going == "r" and self.__image not in self.animation_list["WALK_R"]:
             self.__image = self.animation_list["WALK_R"][0]
-
         if self.going == "u" and self.__image not in self.animation_list["WALK_U"]:
             self.__image = self.animation_list["WALK_U"][0]
-
         if self.going == "d" and self.__image not in self.animation_list["WALK_D"]:
             self.__image = self.animation_list["WALK_D"][0]
-
         if (self.distanceMoved[1] % self.animation_speed == 0 and self.distanceMoved[1] != 0):
             if self.distanceMoved[1] < 0:
                 self.distanceMoved[1] = -1
@@ -70,7 +66,6 @@ class Player_Sprite(pygame.sprite.Sprite):
                 self.distanceMoved[0] = -1
                 self.__image = next(self.animations["WALK_U"])
             elif self.distanceMoved[0] > 0:
-
                 self.distanceMoved[0] = 1
                 self.__image = next(self.animations["WALK_D"])
         else:
