@@ -5,7 +5,8 @@ import math
 pg.init()
 size = (400, 400)
 screen = pg.display.set_mode(size)
-
+#Este test es tan raro por el formato de la imagen ball. El otro funciona con el
+#alpha sin problemas. Habrá que ver supongo
 ball = pg.image.load("Juego(por nombrar)/src/clases/animations/ball_1.png")
 ball.convert()
 ball.convert_alpha()        #No creo que necesario

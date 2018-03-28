@@ -11,9 +11,14 @@ person = pg.image.load("Juego(por nombrar)/src/clases/animations/player_walk_d1.
 pg.init()
 screen = pg.display.set_mode((500,500))
 pg.display.set_caption("hitbox test")
+
 ball.convert()
 person.convert_alpha()
 person.set_alpha(255)
+person.set_colorkey((255, 255, 255))
+
+subrect = person.subsurface([5,0,40,5])
+subrect.fill((255,0,0))
 
 t = 0
 while True:
