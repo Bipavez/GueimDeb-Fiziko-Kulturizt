@@ -9,9 +9,7 @@ ball = pg.image.load("ball_1.png")
 ball.convert()
 ball.convert_alpha()        #No creo que necesario
 
-new = ball.copy()
 t = 0
-
 while True:
     pg.event.pump()
     for event in pg.event.get():
