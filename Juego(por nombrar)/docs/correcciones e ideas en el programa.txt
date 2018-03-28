@@ -1,0 +1,23 @@
+1) Hacer todos los métodos update() independientes del FPS, por ende mutiplicar sus animaciones por el FPS/1000
+2) Hacer clase Juego que controle el Mainloop
+3) Hacer plataforma para crear niveles, añadiendo objetos, personajes y futuramente scripts
+4) 8-way movement, con diagonales mas lentas
+5) Lightning system, renderear sombras en realtime o hacer generador de shadows (ocupar de referencia https://www.reddit.com/r/pygame/comments/4u8iht/challenge_fog_of_war/)
+6) combate con formas geometricas y detección de colisión
+7) crear funciones que actuen sobre PixelArrays, cosa de que podamos efectivamente trabajar con sprites sin problemas (drunken state, ghost state, cambios de paleta)
+8) Vector based movement
+9) Puzzle making
+10) Forma de guardar niveles en csv o json (probably json) para hacer el creador de niveles mas efectivo y también hacer el testeo mas fácil
+11) Usar numpy de forma excesiva
+12) En relación al punto 7, crear un nivel o tiles que se muevan en esta forma https://www.youtube.com/watch?v=vZp0ETdD37E (mundo bizarro)
+13) Implementar sistema de combos, implementar saltos y alturas a las superficies
+14) Implementar distintos tipos de equipamiento, mascotas y tales.
+15) Hacer eventos relacionados con la música usando el módulo midi
+16) Hacer un enemigo Machine Learnero
+17) Framework general para las peleas de bosses
+18) Framework general para las instancias de plataforma (comparado al RTS)
+19) AI implementation
+20) Implementación de mapa, descubrimiento estilo Zelda o WoW
+21) Skill Tree implementation
+22) Nemesis system style SoM
+23) False Narrative 

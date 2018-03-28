@@ -29,7 +29,15 @@ concepto historia:
   entes poseen personar y se vuelven agresivos (hacer la historia alrededor de eso), pueden deformar la realidad(estilo Breath of the Wild).
 
 historia estructural:
-  capitulo
+  personajes
+  |____arcos
+        |____capitulos
+              |____escenas
+
 
 batalla ideas:
   pelear con entes o dioses, estos se llaman cada turno para bendecir o ayudar o atacar o proteger
+
+sistema-magic:
+  combinaciones e interacciones en los ataques
+  enviromental intaraction

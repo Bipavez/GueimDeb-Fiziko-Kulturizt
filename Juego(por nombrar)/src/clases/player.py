@@ -6,7 +6,7 @@ from itertools import cycle
 import threading
 import sys, os
 import time
-
+import numpy
 window_up = 1080
 window_len = 1920
 class Player_Sprite(pygame.sprite.Sprite):
@@ -76,7 +76,6 @@ class Player_Sprite(pygame.sprite.Sprite):
         self.rect.x,self.rect.y = self.x, self.y
     def handle_keys(self): #como se manejan las acciones, en un futuro añadir ataque y defensa
         key = pygame.key.get_pressed()
-
         vel = self.speed
         if key[pygame.K_DOWN] or key[pygame.K_UP]:
             if key[pygame.K_DOWN]:
@@ -120,14 +119,10 @@ class Equipment(pygame.sprite.Sprite):
         self.parent = parent
         self.__animation_count = 0
         self.rect = self.image.get_rect()
-
-
     @property
     def animation_count(self):
         self.__animation_count += 1
         return self.__animation_count
-
-
     @property
     def image(self):
         if self.animation_count % 50 == 0 and self.animation_count != 0:
@@ -139,7 +134,6 @@ class Equipment(pygame.sprite.Sprite):
     def update(self):
         self.rect.x = self.parent.rect.x - 20
         self.rect.y = self.parent.rect.y - 20
-
 pygame.init()
 screen = pygame.display.set_mode((window_len, window_up), RESIZABLE | FULLSCREEN)
 PJ = Player_Sprite(window_up-64, window_len-50)
@@ -151,6 +145,8 @@ Keys = set([pygame.K_DOWN, pygame.K_UP, pygame.K_RIGHT, pygame.K_LEFT])
 G = pygame.sprite.Group()
 G.add(PJ)
 G.add(Ball)
+sec_screen = pygame.surface.Surface((window_len, window_up))
+
 while running:
     # handle every event since the last frame.
     for event in pygame.event.get():
@@ -165,24 +161,25 @@ while running:
             if "1920" in str(pygame.display.Info()):
                 window_up = 900
                 window_len = 1600
-                screen = pygame.transform.scale(screen, (window_len, window_up))
-                pygame.display.set_mode((window_len,window_up), RESIZABLE)
+                pygame.transform.scale(sec_screen,(window_len, window_up))
+                pygame.display.set_mode((window_len,window_up))
+                pygame.display.update()
+
             else:
                 window_up = 1080
                 window_len = 1920
-                screen = pygame.transform.scale(screen, (window_len, window_up))
-                pygame.display.set_mode((window_len,window_up), RESIZABLE | FULLSCREEN)
-
-
-
-
-
+                pygame.transform.scale(sec_screen, (window_len, window_up))
+                pygame.display.set_mode((window_len,window_up), FULLSCREEN)
+                pygame.display.update()
     G.update()
+
      # handle the keys
-    screen.fill((255,255,255))
+    sec_screen.fill((255,255,255))
      # fill the screen with white
      # draw the bird to the screen
-    G.draw(screen)
+    G.draw(sec_screen)
+    screen.blit(sec_screen, (0,0))
+
     pygame.display.update() # update the screen
 
     clock.tick(500)
