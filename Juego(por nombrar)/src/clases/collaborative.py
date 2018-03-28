@@ -1,3 +1,4 @@
+#Yo pondría esta file en test tbh
 import pygame as pg
 import numpy as np
 from math import *
