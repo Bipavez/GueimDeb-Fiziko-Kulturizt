@@ -17,14 +17,17 @@ class Shadow(sprite.Sprite):
             self.rect = self.parent.image.get_rect()
     @property
     def image(self):
-        xProy = self.rect.x + self.parent.rect.x
-        dist = math.sqrt(xProy**2+(self.rect.y+self.parent.rect.y)**2)
-        array = pg.surfarray.pixels3d(self.parent.image)
+        V_1 = np.array([1, 0])
+        V_2 = np.array([self.rect.x-self.parent.rect.x, self.rect.y-self.parent.rect.y])/np.linalg.norm(np.array([self.rect.x-self.parent.rect.x, self.rect.y-self.parent.rect.y]))
+        array = pg.surfarray.pixels3d(pg.transform.flip(self.parent.image,True, False) if self.rect.y < self.parent.rect.y else self.parent.image)
         rows, cols, bytes = array.shape
-        M = cv.getRotationMatrix2D((rows/2+20, cols/2), 90 + math.acos(xProy/dist), 1)
-        M = np.flip(M, axis=0)
+        angle = math.acos(np.dot(V_2,V_1)) if self.rect.y > self.parent.rect.y else -math.acos(np.dot(V_2,V_1))
+        print(array.shape)
+        print(angle)
+        M = cv.getRotationMatrix2D((rows/2+20, cols/2), 90 + np.degrees(angle), 1)
         dst = cv.warpAffine(array, M, (cols+20,rows+20))
         img = pg.surfarray.make_surface(dst)
+        img.set_colorkey((0,0,0))
         return img
     def update(self):
-        self.rect.y , self.rect.x = (self.parent.rect.y + 0.1*self.parent.rect.width*math.sin(self.parent.walk_frame*0.1),self.parent.rect.x + 0.1*self.parent.rect.width*math.sin(self.parent.walk_frame*0.1))
+        self.rect.y , self.rect.x = (self.parent.rect.y + self.parent.rect.width*math.sin(self.parent.walk_frame*0.07), self.parent.rect.x - self.parent.rect.width*math.cos(self.parent.walk_frame*0.07))
