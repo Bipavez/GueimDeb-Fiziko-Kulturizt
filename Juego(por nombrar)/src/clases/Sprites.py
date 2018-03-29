@@ -64,7 +64,7 @@ class Character_Sprite(sprite.Sprite):
 
 
 
-class Item_Sprite(sprite.Sprite):
+class Item_Sprite(sprite.Sprite):       #Rehacer i think
     def __init__(self, img_pth, parent, speed = 30):
         super().__init__()
         self.speed = speed

@@ -27,10 +27,11 @@ collision_entities = sprite.Group(player, npc)
 
 player_x = player.x
 player_y = player.y
-
+##############Print player in background
 clock = pg.time.Clock()
 
-fog = draw_fog(screen, FOG)
+if FOG != 0:
+    fog = draw_fog(screen, FOG)
 
 while True:
     #Screen filling START
