@@ -7,8 +7,8 @@ import threading
 import sys, os
 import time
 import numpy
-window_up = 1080
-window_len = 1920
+window_up = 720
+window_len = 1080
 class Player_Sprite(pygame.sprite.Sprite):
     def __init__(self,win_h  ,win_l ,img_pth = "player",speed  = 1
                  , width = 64, height = 64, animation_speed = 3.5):
