@@ -5,8 +5,8 @@ import pygame as pg
 # Importing prepare initializes the display.
 import prepare
 import actors
-        
-            
+
+
 class App(object):
     """This is the main class that runs the program."""
     def __init__(self):
@@ -56,7 +56,7 @@ class App(object):
             #change_layer automatically sets sprite.dirty from 0 to 1
             if sprite.layer != sprite.rect.bottom:
                 self.all_sprites.change_layer(sprite, sprite.rect.bottom)
-                
+
     def render(self):
         """Fill screen and render all actors."""
         dirty_rects = self.all_sprites.draw(self.screen)
