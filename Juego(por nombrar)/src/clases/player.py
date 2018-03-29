@@ -112,7 +112,7 @@ class Player_Sprite(pygame.sprite.Sprite):
 class Equipment(pygame.sprite.Sprite):
     def __init__(self, img_pth, parent):
         super().__init__()
-        self.animation_list = {"BALL_MOVE":[pygame.image.load(ld_img) for ld_img in glob.glob("animations/{}_**".format(img_pth))]}
+        self.animation_list = {"BALL_MOVE":[pygame.image.load(ld_img) for ld_img in glob.glob("animations\\{}\\**".format(img_pth))]}
         self.animations = {"BALL_MOVE":cycle(self.animation_list["BALL_MOVE"])}
         self.__image = next(self.animations["BALL_MOVE"])
         print(self.animation_list)
