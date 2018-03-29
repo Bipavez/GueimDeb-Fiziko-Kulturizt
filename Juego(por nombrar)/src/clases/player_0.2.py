@@ -30,19 +30,20 @@ class Character_Sprite(sprite.Sprite):
     def set_position(self, coords):
         self.x,self.y = coords[0], coords[1]
         self.rect.x, self.rect.y = self.x, self.y
-        
+
     @property
     def image(self):
         if self.__image not in self.animation_list[self.going]:
             self.__image = next(self.animations[self.going])
-            self.walk_frame = 0
+            self.walk_frame = 1
         else:
             if self.walk_frame % 6 == 0:            #Ajustar el número con FPS
                 self.__image = next(self.animations[self.going])
+                self.walk_frame += 1
             else:
                 pass
         return self.__image
-    
+
     def handle_keys(self): #como se manejan las acciones, en un futuro añadir ataque y defensa
         key = pg.key.get_pressed()
         vel = self.speed
@@ -81,29 +82,30 @@ class Character_Sprite(sprite.Sprite):
             for a in animation_list[key]:
                 a.set_colorkey((255,255,255))
         return animation_list
-                    
+
     def update(self):
         self.handle_keys()
 
-        
+
 class Item_Sprite(sprite.Sprite):
-    def __init__(self, img_pth, parent):
+    def __init__(self, img_pth, parent,  speed = 30):
         super().__init__()
+        self.speed = speed
         self.animation_list = {"BALL_MOVE":[pg.image.load(ld_img) for ld_img in glob.glob("animations\\{}\\**".format(img_pth))]}
         self.animations = {"BALL_MOVE":cycle(self.animation_list["BALL_MOVE"])}
         self.__image = next(self.animations["BALL_MOVE"])
-        print(self.animation_list)
         self.parent = parent
         self.__animation_count = 0
         self.rect = self.image.get_rect()
+
     @property
     def animation_count(self):
-        self.__animation_count += 1
+        self.__animation_count += self.speed
         return self.__animation_count
     @property
     def image(self):
         if self.animation_count % 50 == 0 and self.animation_count != 0:
-            self.__animation_count = 1
+            self.__animation_count = 0
             self.__image = next(self.animations["BALL_MOVE"])
             return self.__image
         else:
@@ -118,14 +120,15 @@ screen = pg.display.set_mode((win_l,win_h))
 background = pg.image.load("animations\\background.png")
 
 player = Character_Sprite("player", 5)
-entities = sprite.Group(player)
+ball = Item_Sprite("ball", player)
+entities = sprite.Group(player, ball)
 
 clock = pg.time.Clock()
 
 while True:
     screen.blit(background, (0,0,500,500))
     entities.draw(screen)
-    
+
     if pg.key.get_pressed()[pg.K_ESCAPE]:
         pg.quit() # quit the screen
         break
@@ -135,8 +138,7 @@ while True:
             break
 
     entities.update()
-    
+
     clock.tick(40)
     pg.display.set_caption("{}".format(clock.get_fps()))
     pg.display.update()
-
