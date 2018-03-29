@@ -6,7 +6,7 @@ pg.init()
 size = (400, 400)
 screen = pg.display.set_mode(size)
 
-ball = pg.image.load("Juego(por nombrar)/src/clases/animations/ball_1.png")
+ball = pg.image.load("animations/ball_1.png")
 ball.convert()
 ball.convert_alpha()        #No creo que necesario
 
