@@ -166,8 +166,8 @@ while running:
                 pygame.display.update()
 
             else:
-                window_up = 1080
-                window_len = 1920
+                window_up = 720
+                window_len = 1080
                 pygame.transform.scale(sec_screen, (window_len, window_up))
                 pygame.display.set_mode((window_len,window_up), FULLSCREEN)
                 pygame.display.update()
