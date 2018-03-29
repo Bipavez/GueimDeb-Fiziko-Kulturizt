@@ -8,15 +8,6 @@ from Sprites import *
 from ImageProcessing import *
 from settings import *
 
-
-
-def draw_fog(screen, depth):
-    fog = pg.Surface((W,H), pg.SRCALPHA)
-    fog.fill((0,0,0,255))
-    for i in range(255, 1, -1):
-        pg.draw.circle(fog, (0,0,0,i), (W//2,H//2), round(i*depth))
-    return fog
-
 pg.init()
 screen = pg.display.set_mode((W,H))
 background = pg.image.load("animations\\background.png")

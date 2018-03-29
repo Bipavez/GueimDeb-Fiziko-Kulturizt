@@ -31,3 +31,21 @@ class Shadow(sprite.Sprite):
         return img
     def update(self):
         self.rect.y , self.rect.x = (self.parent.rect.y + self.parent.rect.width*math.sin(self.parent.walk_frame*0.07), self.parent.rect.x - self.parent.rect.width*math.cos(self.parent.walk_frame*0.07))
+
+
+
+
+
+
+
+
+
+
+
+
+def draw_fog(screen, depth):
+    fog = pg.Surface((W,H), pg.SRCALPHA)
+    fog.fill((0,0,0,255))
+    for i in range(255, 1, -1):
+        pg.draw.circle(fog, (0,0,0,i), (W//2,H//2), round(i*depth))
+    return fog
