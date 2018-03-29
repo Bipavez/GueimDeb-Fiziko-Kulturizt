@@ -5,8 +5,11 @@ from pygame.locals import *
 import glob
 from itertools import cycle
 
-win_l = 500
+win_l = 700
 win_h = 500
+
+player_x = 0
+player_y = 0
 
 class Character_Sprite(sprite.Sprite):
     def __init__(self, name, speed):
@@ -24,7 +27,6 @@ class Character_Sprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 0
         self.y = 0
-        self.set_position((200,200))
         self.speed = speed
 
     def set_position(self, coords):
@@ -44,30 +46,6 @@ class Character_Sprite(sprite.Sprite):
                 pass
         return self.__image
 
-    def handle_keys(self): #como se manejan las acciones, en un futuro añadir ataque y defensa
-        key = pg.key.get_pressed()
-        vel = self.speed
-        if key[pg.K_DOWN] or key[pg.K_UP]:
-            self.walk_frame += 1
-            if key[pg.K_DOWN]:
-                self.going = "WALK_D"
-                if self.rect.y <= win_h:
-                    self.rect.move_ip(0,vel)
-            if key[pg.K_UP]:
-                self.going = "WALK_U"
-                if self.rect.y >= 0:# up key
-                    self.rect.move_ip(0, -vel) # move up
-        elif key[pg.K_LEFT] or key[pg.K_RIGHT]:
-            self.walk_frame += 1
-            if key[pg.K_RIGHT]:
-                self.going = "WALK_R"
-                if self.rect.x <= win_l: # right key
-                    self.rect.move_ip(vel,0) # move right
-            if key[pg.K_LEFT]:
-                self.going = "WALK_L"
-                if self.rect.x >= 0: # left key
-                    self.rect.move_ip(-vel,0) # move left
-
     def get_animation_list(self,name):
         animation_list = {"WALK_U":[pg.image.load(ld_img).convert() for
                            ld_img in glob.glob("animations\\{}\\walk_u*".format(name))],
@@ -83,12 +61,16 @@ class Character_Sprite(sprite.Sprite):
                 a.set_colorkey((255,255,255))
         return animation_list
 
+    def move(self):
+        pass
+
     def update(self):
-        self.handle_keys()
+        self.move()
+
 
 
 class Item_Sprite(sprite.Sprite):
-    def __init__(self, img_pth, parent,  speed = 30):
+    def __init__(self, img_pth, parent, speed = 30):
         super().__init__()
         self.speed = speed
         self.animation_list = {"BALL_MOVE":[pg.image.load(ld_img) for ld_img in glob.glob("animations\\{}\\**".format(img_pth))]}
@@ -114,20 +96,59 @@ class Item_Sprite(sprite.Sprite):
         self.rect.x = self.parent.rect.x - 20
         self.rect.y = self.parent.rect.y - 20
 
+def handle_keys(player):
+    key = pg.key.get_pressed()
+    vel = player.speed
+    if key[pg.K_DOWN] or key[pg.K_UP]:
+        player.walk_frame += 1
+        if key[pg.K_DOWN]:
+            player.going = "WALK_D"
+            if player.y <= 1527:
+                player.y += player.speed
+        if key[pg.K_UP]:
+            player.going = "WALK_U"
+            if player.y > 0:  # up key
+                 player.y -= player.speed
+    elif key[pg.K_LEFT] or key[pg.K_RIGHT]:
+        player.walk_frame += 1
+        if key[pg.K_RIGHT]:
+            player.going = "WALK_R"
+            if player.x <= 1667: # right key
+                 player.x += player.speed
+        if key[pg.K_LEFT]:
+            player.going = "WALK_L"
+            if player.x > 0:  # left key
+                 player.x -= player.speed
+
+
+
+
 pg.init()
 screen = pg.display.set_mode((win_l,win_h))
-
 background = pg.image.load("animations\\background.png")
 
 player = Character_Sprite("player", 5)
+p_l, p_h = player.rect.width, player.rect.height
+player.set_position((win_l//2 - p_l//2, win_h//2 - p_h//2)) #Cambiar, limpiar
+
 ball = Item_Sprite("ball", player)
-entities = sprite.Group(player, ball)
+
+npc = Character_Sprite("player",0)
+npc.set_position((400,300))
+
+player_entities = sprite.Group(player, ball)
+background_entities = sprite.Group(npc)
+
+player_x = player.x
+player_y = player.y
 
 clock = pg.time.Clock()
 
 while True:
-    screen.blit(background, (0,0,500,500))
-    entities.draw(screen)
+    screen.fill((0,0,0))
+    screen.blit(background, (win_l//2 - player.x, win_h//2 - player.y, win_l, win_h))
+    background_entities.draw(background)
+    player_entities.draw(screen)
 
     if pg.key.get_pressed()[pg.K_ESCAPE]:
         pg.quit() # quit the screen
@@ -137,8 +158,15 @@ while True:
             pg.quit() # quit the screen
             break
 
-    entities.update()
+    player_entities.update()
+    background_entities.update()
 
     clock.tick(40)
     pg.display.set_caption("{}".format(clock.get_fps()))
+
+    handle_keys(player)
+    player_x = player.x
+    player_y = player.y
+    print("{}, {}".format(player_x, player_y))
     pg.display.update()
+    background_entities.clear(background,background)
