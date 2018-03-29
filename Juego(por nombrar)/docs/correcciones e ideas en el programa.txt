@@ -20,4 +20,6 @@
 20) Implementación de mapa, descubrimiento estilo Zelda o WoW
 21) Skill Tree implementation
 22) Nemesis system style SoM
-23) False Narrative 
+23) False Narrative
+24) Dialogos dinamicos, sin cambiar de instancia
+25) Importancia del texto
