@@ -3,7 +3,9 @@ from pygame import sprite
 from pygame.locals import *
 import math
 
-from modulo_clases_entidades_primitivas import *
+from Control import *
+from Sprites import *
+from ImageProcessing import *
 
 win_l = 700
 win_h = 500
