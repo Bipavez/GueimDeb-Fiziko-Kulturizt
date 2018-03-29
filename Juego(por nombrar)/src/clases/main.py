@@ -3,19 +3,12 @@ from pygame import sprite
 from pygame.locals import *
 import math
 
-from Control import *
+from Control import *       #En algún momento poner referencias
 from Sprites import *
 from ImageProcessing import *
+from settings import *
 
-#GAME DISPLAY PARAMETERS            #Exportar esto a otro archivo
-W = 700
-H = 500
 
-FOG = 1
-#/
-
-player_x = 0
-player_y = 0
 
 def draw_fog(screen, depth):
     fog = pg.Surface((W,H), pg.SRCALPHA)
@@ -57,7 +50,7 @@ while True:
     if FOG != 0:
         screen.blit(fog, (0,0))
     #Screen filling END
-        
+
     keys = pg.key.get_pressed()
     if keys[K_ESCAPE]:
         pg.quit() # quit the screen
@@ -69,7 +62,7 @@ while True:
     for event in pg.event.get():
         if event.type is pg.QUIT:
             pg.quit() # quit the screen
-            break            
+            break
 
     player_entities.update()
     background_entities.update()
