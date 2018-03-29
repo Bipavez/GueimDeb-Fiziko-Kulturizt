@@ -22,13 +22,13 @@ class Player_Sprite(pygame.sprite.Sprite):
         self.animation_speed = int(100/animation_speed) if animation_speed != 0 else 23
         self.speed = speed
         self.animation_list = {"WALK_U":[pygame.image.load(ld_img) for
-                               ld_img in glob.glob("animations/{}_walk_u*".format(img_pth))],
+                               ld_img in glob.glob("animations\\{}\\walk_u*".format(img_pth))],
                                "WALK_D":[pygame.image.load(ld_img) for
-                               ld_img in glob.glob("animations/{}_walk_d*".format(img_pth))],
+                               ld_img in glob.glob("animations\\{}\\walk_d*".format(img_pth))],
                                "WALK_L":[pygame.image.load(ld_img) for
-                               ld_img in glob.glob("animations/{}_walk_l*".format(img_pth))],
+                               ld_img in glob.glob("animations\\{}\\walk_l*".format(img_pth))],
                                "WALK_R":[pygame.image.load(ld_img) for
-                               ld_img in glob.glob("animations/{}_walk_r*".format(img_pth))]
+                               ld_img in glob.glob("animations\\{}\\walk_r*".format(img_pth))]
                               }
         self.animations = {"WALK_D":cycle(self.animation_list["WALK_D"]),
                            "WALK_U":cycle(self.animation_list["WALK_U"]),
@@ -182,4 +182,4 @@ while running:
 
     pygame.display.update() # update the screen
 
-    clock.tick(500)
+    clock.tick(40)
