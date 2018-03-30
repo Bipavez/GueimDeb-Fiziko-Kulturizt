@@ -60,7 +60,7 @@ class Shadow(sprite.Sprite):
         angle = math.acos(np.dot(V_2,V_1)) if self.rect.y > self.parent.rect.y else -math.acos(np.dot(V_2,V_1))
         dst = rotate_image(self.array, np.degrees(angle))
         img = self.get_shadow(dst).convert()
-        #img.set_colorkey((255,255,255))
+        img.set_colorkey((255,255,255))
 
         return img
 
