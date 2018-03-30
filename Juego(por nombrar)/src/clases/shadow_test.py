@@ -1,4 +1,4 @@
-
+#Deja de testear en esta carpeta plis
 import pygame
 import numpy
 import time
