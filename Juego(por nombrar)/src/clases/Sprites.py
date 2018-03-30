@@ -20,8 +20,8 @@ class Character_Sprite(sprite.Sprite):
         self.going = "WALK_D"
         imageRect = self.image.get_rect()
         print(imageRect)
-        self.rect = pg.Rect(imageRect[3]/2,imageRect[2]/2,imageRect[2], imageRect[3]*2)
-        self.rect.center = tuple([self.rect.width/2, self.rect.height])
+        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
+        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
         print(self.rect.width/2, self.rect.bottom)
         print(self.rect.center)
         self.x = 0

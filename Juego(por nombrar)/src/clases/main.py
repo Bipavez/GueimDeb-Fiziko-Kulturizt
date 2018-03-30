@@ -1,6 +1,7 @@
 import pygame as pg
 from pygame import sprite
 from pygame.locals import *
+import time
 import math
 from Control import *
 from Sprites import *
@@ -19,7 +20,7 @@ ball = Item_Sprite("ball", player)
 npc = Character_Sprite("player",0)
 npc.set_position((400,300))
 shadow = Shadow(player)
-player_entities = sprite.Group(shadow ,player, ball)
+player_entities = sprite.Group(shadow, player, ball)
 background_entities = sprite.Group(npc)
 player_x = player.x
 player_y = player.y
@@ -29,8 +30,8 @@ while True:
     screen.blit(background, (win_l//2 - player.x, win_h//2 - player.y, win_l, win_h))
     background_entities.draw(background)
     player_entities.draw(screen)
-    pg.draw.circle(screen, (255, 124, 200),player.rect.center, 7)
-    pg.draw.circle(screen, (255, 124, 240),shadow.rect.center, 7)
+
+
     if pg.key.get_pressed()[pg.K_ESCAPE]:
         pg.quit() # quit the screen
         break
@@ -38,6 +39,7 @@ while True:
         if event.type is pg.QUIT:
             pg.quit() # quit the screen
             break
+
     player_entities.update()
     background_entities.update()
 

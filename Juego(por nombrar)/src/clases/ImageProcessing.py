@@ -2,10 +2,36 @@
 import pygame as pg
 from pygame import sprite
 from pygame.locals import *
-
+import imutils
 import math
 import cv2 as cv
 import numpy as np
+def rotate_image(mat, angle):
+    """
+    Rotates an image (angle in degrees) and expands image to avoid cropping
+    """
+
+    height, width, bytes = mat.shape
+    image_center = (width/2, height/2) # getRotationMatrix2D needs coordinates in reverse order (width, height) compared to shape
+
+    rotation_mat = cv.getRotationMatrix2D(image_center, 90 + angle, 1.)
+
+    # rotation calculates the cos and sin, taking absolutes of those.
+    abs_cos = abs(rotation_mat[0,0])
+    abs_sin = abs(rotation_mat[0,1])
+
+    # find the new width and height bounds
+    bound_w = int(height * abs_sin + width * abs_cos)
+    bound_h = int(height * abs_cos + width * abs_sin)
+
+    # subtract old image center (bringing image back to origo) and adding the new image center coordinates
+    rotation_mat[0, 2] += bound_w/2 - image_center[0]
+    rotation_mat[1, 2] += bound_h/2 - image_center[1]
+
+    # rotate image with the new bounds and translated rotation matrix
+    rotated_mat = cv.warpAffine(mat, rotation_mat, (bound_w, bound_h))
+
+    return rotated_mat
 class Shadow(sprite.Sprite):
     def __init__(self, parent):
         super().__init__()
@@ -14,33 +40,32 @@ class Shadow(sprite.Sprite):
             self.rect = self.image.get_rect()
         except:
             self.rect = self.parent.image.get_rect()
-
-
-
+    @property
+    def array(self):
+        return pg.surfarray.pixels3d(self.parent.image if self.rect.y < self.parent.rect.y else pg.transform.flip(self.parent.image,True, False))
+    def get_shadow(self, image):
+        im_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        (thresh, im_bw) = cv.threshold(im_gray, 20, 255, cv.THRESH_BINARY_INV |  cv.THRESH_TRIANGLE)
+        surf = pg.surfarray.make_surface(im_bw)
+        return surf
     @property
     def image(self):
         V_1 = np.array([1, 0])
-        V_2 = np.array([self.rect.x-self.parent.rect.x, self.rect.y-self.parent.rect.y])/np.linalg.norm(np.array([self.rect.x-self.parent.rect.x, self.rect.y-self.parent.rect.y]))
-        array = pg.surfarray.pixels3d(self.parent.image if self.rect.y < self.parent.rect.y else pg.transform.flip(self.parent.image,True, False))
-        rows, cols, bytes = array.shape
+        V_2 = np.array([self.rect.x-self.parent.rect.centerx, self.rect.y-self.parent.rect.y+self.rect.centery-self.parent.rect.centery])
+        V_2 = V_2/np.linalg.norm(V_2)
+        rows, cols, bytes = self.array.shape
         angle = math.acos(np.dot(V_2,V_1)) if self.rect.y > self.parent.rect.y else -math.acos(np.dot(V_2,V_1))
-        maxWH = max(rows, cols)
-        M = cv.getRotationMatrix2D((maxWH/2, maxWH/2), 90 + np.degrees(angle), 1)
-        dst = cv.warpAffine(array, M, (cols+20,rows+30))
-        """
-        gray = cv.cvtColor(array,cv.COLOR_BGR2GRAY)
-        _,thresh = cv.threshold(gray,1,255,cv.THRESH_BINARY)
-        contours,hierarchy, something = cv.findContours(thresh,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_SIMPLE)
-        cnt = contours[0]
-        x,y,w,h = cv.boundingRect(cnt)
-        dst = dst[y:y+h,x:x+w]
-        """
-        img = pg.surfarray.make_surface(dst)
-        img.set_colorkey((0,0,0))
+        dst = rotate_image(self.array, np.degrees(angle))
+        img = self.get_shadow(dst).convert()
+        img.set_colorkey((255,255,255))
 
         return img
+
     def update(self):
-        xOffset = self.parent.rect.width*math.sin(self.parent.walk_frame*0.07)
-        yOffset = self.parent.rect.width*math.cos(self.parent.walk_frame*0.07)
-        self.rect.center = (self.rect.centerx + xOffset, self.rect.centery +yOffset)
-        self.rect.x , self.rect.y = (self.parent.rect.x + xOffset, self.parent.rect.y + yOffset)
+        self.rect.x, self.rect.y = self.parent.rect.x-6, self.parent.rect.bottom-5
+def draw_fog(screen, depth):
+    fog = pg.Surface((W,H), pg.SRCALPHA)
+    fog.fill((0,0,0,255))
+    for i in range(255, 1, -1):
+        pg.draw.circle(fog, (0,0,0,i), (W//2,H//2), round(i*depth))
+    return fog
