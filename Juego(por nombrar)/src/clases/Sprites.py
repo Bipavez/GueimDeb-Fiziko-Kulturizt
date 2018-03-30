@@ -24,9 +24,8 @@ class Character_Sprite(sprite.Sprite):
         self.y = 0
         self.speed = speed
 
-    def set_position(self, coords):
-        self.x,self.y = coords[0], coords[1]
-        self.rect.x, self.rect.y = self.x, self.y
+    def set_position(self, CAMERA_X, CAMERA_Y):
+        self.rect.x, self.rect.y = self.x-CAMERA_X, self.y-CAMERA_Y
 
     @property
     def image(self):
@@ -59,8 +58,9 @@ class Character_Sprite(sprite.Sprite):
     def move(self):
         pass
 
-    def update(self):
+    def update(self, CAMERA_X, CAMERA_Y):
         self.move()
+        self.set_position(CAMERA_X, CAMERA_Y)
 
 
 
@@ -87,6 +87,6 @@ class Item_Sprite(sprite.Sprite):       #Rehacer i think
             return self.__image
         else:
             return self.__image
-    def update(self):
+    def update(self, CAMERA_X, CAMERA_Y):
         self.rect.x = self.parent.rect.x - 20
         self.rect.y = self.parent.rect.y - 20

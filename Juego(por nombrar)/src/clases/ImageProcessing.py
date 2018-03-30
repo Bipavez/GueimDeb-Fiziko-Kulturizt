@@ -11,6 +11,8 @@ class Shadow(sprite.Sprite):
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.x = 0
+        self.y = 0
         try:
             self.rect = self.image.get_rect()
         except:
@@ -29,8 +31,8 @@ class Shadow(sprite.Sprite):
         img = pg.surfarray.make_surface(dst)
         img.set_colorkey((0,0,0))
         return img
-    def update(self):
-        self.rect.y , self.rect.x = (self.parent.rect.y + self.parent.rect.width*math.sin(self.parent.walk_frame*0.07), self.parent.rect.x - self.parent.rect.width*math.cos(self.parent.walk_frame*0.07))
+    def update(self,CAMERA_X,CAMERA_Y):
+        self.rect.y , self.rect.x = (self.parent.y-CAMERA_Y + self.parent.rect.width*math.sin(self.parent.walk_frame*0.07), self.parent.x-CAMERA_X - self.parent.rect.width*math.cos(self.parent.walk_frame*0.07))
 
 
 
@@ -43,9 +45,9 @@ class Shadow(sprite.Sprite):
 
 
 
-def draw_fog(screen, depth):
-    fog = pg.Surface((W,H), pg.SRCALPHA)
+def draw_fog(size, depth):
+    fog = pg.Surface(size, pg.SRCALPHA)
     fog.fill((0,0,0,255))
     for i in range(255, 1, -1):
-        pg.draw.circle(fog, (0,0,0,i), (W//2,H//2), round(i*depth))
+        pg.draw.circle(fog, (0,0,0,i), (size[0]//2,size[1]//2), round(i*depth))
     return fog
