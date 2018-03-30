@@ -49,8 +49,6 @@ class Shadow(sprite.Sprite):
         (thresh, im_bw) = cv.threshold(im_gray, 0, 255, cv.THRESH_BINARY_INV | cv.THRESH_TRIANGLE)
         kernel = np.ones((3,3),np.uint8)
         im_bw = cv.erode(im_bw, kernel ,iterations = 1)
-        im_bw = cv.distanceTransform(im_bw, cv.DIST_L2, 5)
-        im_bw = cv.cvtColor(im_bw, cv.COLOR_BGR2RGB)
         surf = pg.surfarray.make_surface(im_bw)
         return surf
     @property
