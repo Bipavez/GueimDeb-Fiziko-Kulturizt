@@ -46,11 +46,8 @@ while True:
         screen.blit(fog, (0,0))
     ###
 
-    #Key handling
-    keys = pg.key.get_pressed()
-    if keys[K_ESCAPE]:
-        pg.quit() # quit the screen
-        break
+    #Event handling
+    handle_keys(player)
     for event in pg.event.get():
         if event.type is pg.QUIT:
             pg.quit() # quit the screen
@@ -63,7 +60,6 @@ while True:
     clock.tick(40)
     pg.display.set_caption("{}".format(clock.get_fps()))
 
-    handle_keys(player)
     CAMERA_X = player.x - W//2 + p_l//2
     CAMERA_Y = player.y - H//2 + p_h//2
     pg.display.update()
