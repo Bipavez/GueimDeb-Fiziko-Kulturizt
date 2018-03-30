@@ -1,6 +1,7 @@
 import pygame as pg
 from pygame import sprite
 from pygame.locals import *
+import time
 import math
 
 from Control import *       #En algún momento poner referencias
@@ -15,13 +16,11 @@ CAMERA_X, CAMERA_Y = 0, 0
 pg.init()
 screen = pg.display.set_mode((W,H))
 background = pg.image.load("animations\\background.png")
-
 player = Character_Sprite("player", 5)
 p_l, p_h = player.rect.width, player.rect.height
 player.x, player.y = W//2 - p_l//2, H//2 - p_h//2 #Cambiar, limpiar
 
 ball = Item_Sprite("ball", player)
-
 npc = Character_Sprite("player",0)
 npc.x, npc.y = 400,300
 shadow = Shadow(player)

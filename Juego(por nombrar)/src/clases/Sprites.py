@@ -18,14 +18,19 @@ class Character_Sprite(sprite.Sprite):
         self.__image = next(self.animations["WALK_D"])
         self.walk_frame = 1
         self.going = "WALK_D"
-
-        self.rect = self.image.get_rect()
+        imageRect = self.image.get_rect()
+        print(imageRect)
+        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
+        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
+        print(self.rect.width/2, self.rect.bottom)
+        print(self.rect.center)
         self.x = 0
         self.y = 0
         self.speed = speed
 
     def set_position(self, CAMERA_X, CAMERA_Y):
         self.rect.x, self.rect.y = self.x-CAMERA_X, self.y-CAMERA_Y
+
 
     @property
     def image(self):
@@ -52,7 +57,7 @@ class Character_Sprite(sprite.Sprite):
                            }
         for key in animation_list:                          #Hace el blanco transparente
             for a in animation_list[key]:
-                a.set_colorkey((255,255,255))
+                a.set_colorkey((0,0,0))
         return animation_list
 
     def move(self):
