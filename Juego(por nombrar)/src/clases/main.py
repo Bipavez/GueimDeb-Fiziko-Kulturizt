@@ -9,9 +9,10 @@ from Sprites import *
 from ImageProcessing import *
 from settings import *
 
-FOG = 2
+#Start settings
+FOG = 0         #Massive lag?
+##
 
-CAMERA_X, CAMERA_Y = 0, 0
 
 pg.init()
 screen = pg.display.set_mode((W,H))
@@ -44,7 +45,7 @@ while True:
     player_entities.draw(screen)
     if FOG != 0:
         screen.blit(fog, (0,0))
-    ###
+    ##
 
     #Event handling
     handle_keys(player)
