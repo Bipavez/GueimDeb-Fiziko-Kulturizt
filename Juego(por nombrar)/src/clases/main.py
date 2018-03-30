@@ -9,13 +9,7 @@ from Sprites import *
 from ImageProcessing import *
 from settings import *
 
-<<<<<<< HEAD
 FOG = 1
-=======
-#Start settings
-FOG = 0         #Massive lag?
-##
->>>>>>> da1c1660b391dfd808f5266295cd1a6f11e0db94
 
 
 pg.init()
