@@ -46,16 +46,10 @@ class Shadow(sprite.Sprite):
         return pg.surfarray.pixels3d(self.parent.image if self.rect.y < self.parent.rect.y else pg.transform.flip(self.parent.image,True, False))
     def get_shadow(self, image):
         im_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        (thresh, im_bw) = cv.threshold(im_gray, 0, 255, cv.THRESH_BINARY |  cv.THRESH_TRIANGLE)
+        (thresh, im_bw) = cv.threshold(im_gray, 0, 255, cv.THRESH_BINARY_INV | cv.THRESH_TRIANGLE)
         kernel = np.ones((3,3),np.uint8)
-        opening = cv.morphologyEx(im_bw,cv.MORPH_OPEN,kernel, iterations = 2)
-
-
-        sure_bg = cv.dilate(opening, kernel ,iterations = 6)
-        dist_transform = cv.distanceTransform(opening,cv.DIST_L2,5)
-        ret, sure_fg = cv.threshold(dist_transform,0.7*dist_transform.max(),255,0)
-        sure_bg = np.uint8(sure_fg)
-        surf = pg.surfarray.make_surface(sure_fg)
+        im_bw = cv.erode(im_bw, kernel ,iterations = 1)
+        surf = pg.surfarray.make_surface(im_bw)
         return surf
     @property
     def image(self):
@@ -66,7 +60,7 @@ class Shadow(sprite.Sprite):
         angle = math.acos(np.dot(V_2,V_1)) if self.rect.y > self.parent.rect.y else -math.acos(np.dot(V_2,V_1))
         dst = rotate_image(self.array, np.degrees(angle))
         img = self.get_shadow(dst).convert()
-        #img.set_colorkey((255,255,255))
+        img.set_colorkey((255,255,255))
 
         return img
 
