@@ -66,11 +66,12 @@ class Shadow(sprite.Sprite):
 
         return img
 
-    def update(self):
-        self.rect.x, self.rect.y = self.parent.rect.x-6, self.parent.rect.bottom-5
-def draw_fog(screen, depth):
-    fog = pg.Surface((W,H), pg.SRCALPHA)
+    def update(self,CAMERA_X,CAMERA_Y):
+        self.rect.x, self.rect.y = self.parent.x-CAMERA_X-6, self.parent.rect.bottom-5
+
+def draw_fog(size, depth):
+    fog = pg.Surface(size, pg.SRCALPHA)
     fog.fill((0,0,0,255))
     for i in range(255, 1, -1):
-        pg.draw.circle(fog, (0,0,0,i), (W//2,H//2), round(i*depth))
+        pg.draw.circle(fog, (0,0,0,i), (size[0]//2,size[1]//2), round(i*depth))
     return fog

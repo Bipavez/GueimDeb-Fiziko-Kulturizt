@@ -4,7 +4,9 @@ from pygame.locals import *
 
 def handle_keys(player):
     key = pg.key.get_pressed()
-    vel = player.speed
+    if key[K_ESCAPE]:
+        pg.quit()
+        #Thread exit?
     if key[pg.K_DOWN] or key[pg.K_UP]:
         player.walk_frame += 1
         if key[pg.K_DOWN]:
