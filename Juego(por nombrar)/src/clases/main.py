@@ -9,7 +9,7 @@ from Sprites import *
 from ImageProcessing import *
 from settings import *
 
-FOG = 2
+FOG = 1
 
 CAMERA_X, CAMERA_Y = 0, 0
 
