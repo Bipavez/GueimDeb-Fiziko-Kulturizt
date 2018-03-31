@@ -17,7 +17,7 @@ fps = 60
 
 screen = pygame.display.set_mode((window_len, window_up), RESIZABLE | FULLSCREEN)
 
-pygame.mixer.music.load("music/theme.mid")
+pygame.mixer.music.load("music/theme2.mid")
 pygame.mixer.music.play()
 
 pygame.display.set_caption("Juego")
