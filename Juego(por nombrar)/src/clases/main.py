@@ -46,7 +46,7 @@ while True:
         screen.blit(fog, (0,0))
     ##
     Points = False
-    print(Points)
+
     keys = pg.key.get_pressed()
     if keys[pg.K_p]:
         if Points is True:

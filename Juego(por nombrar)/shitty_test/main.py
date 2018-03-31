@@ -169,7 +169,7 @@ while running:
             player.position = new_position
 
         if pygame.key.get_pressed()[pygame.K_f]:
-            if "1920" in str(pygame.display.Info()):
+            if "960" in str(pygame.display.Info()):
                 window_up = 480
                 window_len = 320
                 screen = pygame.transform.scale(screen, (window_len, window_up))
@@ -179,7 +179,7 @@ while running:
                 window_len = 640
                 screen = pygame.transform.scale(screen, (window_len, window_up))
                 pygame.display.set_mode((window_len, window_up), RESIZABLE | FULLSCREEN)
-    screen.fill((255, 255, 255))
+    screen.fill((0, 0, 0))
     player.draw()
     ball.draw()
     pygame.display.update()
