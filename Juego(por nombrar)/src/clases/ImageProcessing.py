@@ -49,12 +49,17 @@ class Shadow(sprite.Sprite):
         (thresh, im_bw) = cv.threshold(im_gray, 0, 255, cv.THRESH_BINARY_INV | cv.THRESH_TRIANGLE)
         kernel = np.ones((3,3),np.uint8)
         im_bw = cv.erode(im_bw, kernel ,iterations = 1)
+        shading = [ pg.surfarray.make_surface(cv.dilate(im_bw, kernel, iterations=i*2)) for i in range(12)]
+        for i, shade in enumerate(shading):
+            shade.set_alpha(i*15+200)
         surf = pg.surfarray.make_surface(im_bw)
+        surf.set_alpha(75)
+        #im_bw = cv.morphologyEx(im_bw, cv.MORPH_GRADIENT, kernel)
         return surf
     @property
     def image(self):
         V_1 = np.array([1, 0])
-        V_2 = np.array([self.rect.x-self.parent.rect.centerx, self.rect.y-self.parent.rect.y+self.rect.centery-self.parent.rect.centery])
+        V_2 = np.array([self.rect.x-self.parent.rect.centerx+25, self.rect.y-self.parent.rect.y+self.rect.centery-self.parent.rect.centery])
         V_2 = V_2/np.linalg.norm(V_2)
         rows, cols, bytes = self.array.shape
         angle = math.acos(np.dot(V_2,V_1)) if self.rect.y > self.parent.rect.y else -math.acos(np.dot(V_2,V_1))
@@ -65,7 +70,7 @@ class Shadow(sprite.Sprite):
         return img
 
     def update(self,CAMERA_X,CAMERA_Y):
-        self.rect.x, self.rect.y = self.parent.x-CAMERA_X-6, self.parent.rect.bottom-5
+        self.rect.x, self.rect.y = self.parent.x-CAMERA_X-5, self.parent.rect.bottom-7
 
 def draw_fog(size, depth):
     fog = pg.Surface(size, pg.SRCALPHA)

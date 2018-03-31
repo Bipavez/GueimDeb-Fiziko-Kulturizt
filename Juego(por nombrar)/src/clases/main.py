@@ -26,7 +26,6 @@ shadow = Shadow(player)
 player_entities = sprite.Group(shadow, player, ball)
 background_entities = sprite.Group(npc)
 collision_entities = sprite.Group(player, npc)
-
 CAMERA_X = player.x - W//2 + p_l//2
 CAMERA_Y = player.y - H//2 + p_h//2
 
@@ -37,6 +36,7 @@ if FOG != 0:
 
 while True:
     #Screen filling
+
     screen.fill((0,0,0))
     screen.blit(background, (-CAMERA_X,-CAMERA_Y, W, H))
     background_entities.draw(screen)
@@ -44,13 +44,25 @@ while True:
     if FOG != 0:
         screen.blit(fog, (0,0))
     ##
-
+    Points = False
+    print(Points)
+    keys = pg.key.get_pressed()
+    if keys[pg.K_p]:
+        if Points is True:
+            Points = False
+        elif Points is False:
+            Points = True
+    if Points:
+        pg.draw.circle(screen, (255,255,255), (player.rect.centerx, player.rect.centery), 5)
+        pg.draw.circle(screen, (255,255,255), (shadow.rect.centerx, shadow.rect.centery), 5)
     #Event handling
     handle_keys(player)
     for event in pg.event.get():
         if event.type is pg.QUIT:
             pg.quit() # quit the screen
             break
+
+
     ##
 
     player_entities.update(CAMERA_X, CAMERA_Y)
