@@ -39,8 +39,9 @@ while True:
 
     screen.fill((0,0,0))
     screen.blit(background, (-CAMERA_X,-CAMERA_Y, W, H))
-    background_entities.draw(screen)
+
     player_entities.draw(screen)
+    background_entities.draw(screen)
     if FOG != 0:
         screen.blit(fog, (0,0))
     ##
