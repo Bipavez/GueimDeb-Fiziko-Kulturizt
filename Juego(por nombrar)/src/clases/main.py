@@ -30,7 +30,8 @@ CAMERA_X = player.x - W//2 + p_l//2
 CAMERA_Y = player.y - H//2 + p_h//2
 
 clock = pg.time.Clock()
-
+pg.mixer.music.load("music/theme2.mid")
+pg.mixer.music.play()
 if FOG != 0:
     fog = draw_fog((W,H), FOG)
 
