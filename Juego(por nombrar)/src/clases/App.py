@@ -8,10 +8,11 @@ from Control import *       #En algún momento poner referencias
 from Sprites import *
 from ImageProcessing import *
 from settings import *
-
+from ambiente import *
 
 def initTest(App, W, H, FOG):
     App.player = Character_Sprite("player", 5)
+
     App.p_l, App.p_h = App.player.rect.width, App.player.rect.height
     App.player.x, App.player.y = W//2 - App.p_l//2, H//2 - App.p_h//2 #Cambiar, limpiar
     App.FOG = FOG
@@ -19,15 +20,21 @@ def initTest(App, W, H, FOG):
     App.ball = Item_Sprite("ball", App.player)
     App.npc = Character_Sprite("player",0)
     App.npc.x, App.npc.y = 400,300
-    App.shadow = Shadow(App.player)
-    App.player_entities = sprite.Group(App.shadow, App.player, App.ball)
+    App.player_alone = sprite.Group(App.player)
+    App.player_entities = sprite.Group(App.player, App.ball)
+    App.fire = fuenteLuz("fire/",300, App.player_alone)
     App.background_entities = sprite.Group(App.npc)
+    App.light_entities = sprite.Group(App.fire)
     App.collision_entities = sprite.Group(App.player, App.npc)
     App.CAMERA_X = App.player.x - W//2 + App.p_l//2
     App.CAMERA_Y = App.player.y - H//2 + App.p_h//2
     pg.mixer.music.load("music/theme2.mid")
     pg.mixer.music.play()
-
+def events():
+	for event in pg.event.get():
+		if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+			pg.quit()
+			sys.exit()
 
 class App:
     def __init__(self, size, backgroundPath, sprites):
@@ -54,38 +61,41 @@ class App:
             self.initialized = True
 
             #Screen filling
+        self.Points = False
         self.text = self.font.render(str(round(self.clock.get_fps())), False, (255,255,255))
         self.screen.fill((0,0,0))
         self.screen.blit(self.background, (-self.CAMERA_X,-self.CAMERA_Y, self.width, self.height))
         self.screen.blit(self.text, (0,0))
+        keys = pg.key.get_pressed()
+        if keys[pg.K_p]:
+            if self.Points is True:
+                self.Points = False
+            elif self.Points is False:
+
+                self.Points = True
+        if self.Points:
+
+            pg.draw.circle(self.screen, (255,255,255), (self.player.rect.centerx, self.player.rect.centery), 5)
+            pg.draw.circle(self.screen, (255,255,0), (self.fire.rect.centerx, self.fire.rect.centery), self.fire.radius)
         self.player_entities.draw(self.screen)
         self.background_entities.draw(self.screen)
+        self.light_entities.draw(self.screen)
         if self.FOG != 0:
             self.screen.blit(self.fog, (0,0))
         ##
-        Points = False
 
-        keys = pg.key.get_pressed()
-        if keys[pg.K_p]:
-            if Points is True:
-                Points = False
-            elif Points is False:
-                Points = True
-        if Points:
-            pg.draw.circle(self.screen, (255,255,255), (self.player.rect.centerx, self.player.rect.centery), 5)
-            pg.draw.circle(self.screen, (255,255,255), (self.shadow.rect.centerx, self.shadow.rect.centery), 5)
+
+
         #Event handling
         handle_keys(self.player)
-        for event in pg.event.get():
-            if event.type is pg.QUIT:
-                pg.quit() # quit the screen
-                break
+        events()
 
 
         ##
 
         self.player_entities.update(self.CAMERA_X, self.CAMERA_Y)
         self.background_entities.update(self.CAMERA_X, self.CAMERA_Y)
+        self.light_entities.update(self.CAMERA_X, self.CAMERA_Y)
 
         self.clock.tick(60)
         pg.display.set_caption("{}".format(self.clock.get_fps()))

@@ -24,7 +24,7 @@ class Character_Sprite(sprite.Sprite):
         self.x = 0
         self.y = 0
         self.speed = speed
-
+        self.radius = self.rect.width/8
     def set_position(self, CAMERA_X, CAMERA_Y):
         self.rect.x, self.rect.y = self.x-CAMERA_X, self.y-CAMERA_Y
     @property
