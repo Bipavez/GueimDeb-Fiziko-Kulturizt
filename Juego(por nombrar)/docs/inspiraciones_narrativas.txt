@@ -8,6 +8,7 @@ Juegos para inspirarse:
   undertale(morality)
   braid(false narrative)
   The stanley parable(similar to bastion but more, dar a personajes la elección de hacer lo que les dicen)
-
+  hyper light drifter(information density)
+  higurashi
 ideas:
   time jumps a cutscenes?
