@@ -9,12 +9,12 @@ import numpy as np
 from settings import *
 from ImageProcessing import *
 from glob import glob
-def delta(t, x0, x):
+def delta(t, x0, x): #experimento para ver como funciona el posc de las sombras
     if x == x0:
         return t
     else:
         return t*(math.sin(x)+math.cos(x))
-class circle(pg.sprite.Sprite):
+class circle(pg.sprite.Sprite): #no es realmente necesario
     def __init__(self, xy, radius, id, surface):
         super().__init__()
         self.xy = xy
@@ -35,27 +35,25 @@ class circle(pg.sprite.Sprite):
         self.xy = xy
     def draw(self):
         pg.draw.circle(self.surface, self.color, (int(self.xy[0]), int(self.xy[1])), self.radius, 0)
-class fuenteLuz(pg.sprite.Sprite):
+class fuenteLuz(pg.sprite.Sprite): #clase base para las fuentes de luz
     def __init__(self, imgPath, lightRadius, lightable):
-        super().__init__()
-        self.center = (0,0)
+        super().__init__() #sí, son sprites
+        self.center = (0,0) #inútil
         self.x = 300
         self.y = 500
         self.lightable = lightable
         self.lightRadius = lightRadius
-        self.shadows = pg.sprite.Group()
-
-        self.animations = cycle(self.get_animations(imgPath))
+        self.animations = cycle(self.get_animations(imgPath)) #obtención de imagenes
         self.animation_counter = 0
         self.__image = next(self.animations)
         array = pg.surfarray.array3d(self.__image)
         self.circ = circle(self.__image.get_rect().center, lightRadius, 5, self.__image)
-        self.rect = pg.rect.Rect(self.x, self.y, self.x+lightRadius, self.y+ lightRadius)
+        self.rect = pg.rect.Rect(self.x, self.y, self.x+lightRadius, self.y+ lightRadius) #se centra la figura
 
 
         self.radius = self.circ.radius
 
-    def get_animations(self, imgPath):
+    def get_animations(self, imgPath): #se consiguen animaciones y se agrandan para poder hacer un cubo de detección de luz
         self.preAnimation = [pg.image.load(img) for img in glob("animations/{}**".format(imgPath))]
         for a in self.preAnimation:
             a.convert()
@@ -73,37 +71,36 @@ class fuenteLuz(pg.sprite.Sprite):
             a.set_colorkey((0,0,0))
         return self.postAnimation
     @property
-    def image(self):
+    def image(self): #bastante estandar
 
         if self.animation_counter > 4:
             self.animation_counter = 0
             self.__image = next(self.animations)
         return self.__image
-    def update(self, x, y):
+    def update(self, x, y): #método que ocupa el grupo
         self.set_position(x,y)
         self.check_area()
 
         self.animation_counter += 1
-    def set_position(self, CAMERA_X, CAMERA_Y):
+    def set_position(self, CAMERA_X, CAMERA_Y): #mover la fuente de luz
 
         self.rect.x, self.rect.y = self.x-CAMERA_X, self.y-CAMERA_Y
-    def check_area(self):
-        obj = pg.sprite.spritecollideany(self, self.lightable)
-
-        if obj != None:
-            objX = obj.rect.centerx+obj.corrections[0]
+    def check_area(self): #función que por ahora contiene la creación de sombras
+        obj = pg.sprite.spritecollideany(self, self.lightable) #se buscavcolisiones entre el sprite de la luz y cualquier otro que este en el grupo de los colisionables
+        if obj != None: #pulir si se puede (se puede)
+            objX = obj.rect.centerx+obj.corrections[0] #se aplican correciones
             objY = obj.rect.centery+obj.corrections[1]
-            Vect = np.array([self.rect.centerx-objX,
+            Vect = np.array([self.rect.centerx-objX, #vextor móvil,  este va del centor del jugador al de la luz
                              self.rect.centery-objY
                             ])
-            E_1 = np.array([1,0])
+            E_1 = np.array([1,0]) #vector canónico para comparar
 
             norm = np.linalg.norm(Vect)
             angle = math.acos(np.vdot(E_1, Vect/norm)) if objY < self.rect.centery else -math.acos(np.vdot(E_1, Vect/norm))
-            rnorm = int(round(norm))^2
+            rnorm = int(round(norm))^2 #transparencia 1/x^2
             angleShadow = angle - np.radians(90)
             angle -= np.radians(180)
-            angle = -angle
+            angle = -angle #comportamientos raros
             print(np.degrees(angle), delta(-30, math.pi/4, angle))
             if norm <= self.radius:
                 alpha = 50/rnorm*255 if norm != 0 else 0

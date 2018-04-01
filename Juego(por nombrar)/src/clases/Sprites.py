@@ -10,19 +10,19 @@ class Character_Sprite(sprite.Sprite):
     def __init__(self, name, speed):
         super().__init__()
         self.animation_list = self.get_animation_list(name)
-        self.animations = {"WALK_D":cycle(self.animation_list["WALK_D"]),
+        self.animations = {"WALK_D":cycle(self.animation_list["WALK_D"]), #diccionario de animaciones
                            "WALK_U":cycle(self.animation_list["WALK_U"]),
                            "WALK_L":cycle(self.animation_list["WALK_L"]),
                            "WALK_R":cycle(self.animation_list["WALK_R"])
                           }
         self.__image = next(self.animations["WALK_D"])
-        self.walk_frame = 1
+        self.walk_frame = 1                                            #contador de caminata, en el futuro cambiar para que el jugador no se quede pegado en una sola animación incomoda
         self.going = "WALK_D"
         imageRect = self.image.get_rect()
         self.rect = imageRect
         shape  = pg.surfarray.array3d(self.__image).shape
         w, h , c = shape
-        self.corrections = (0,h/2)
+        self.corrections = (0,h/2)                                     #correcciones necesarias para la buena referencia de las coordenadas del personaje
         self.x = 0
         self.y = 0
         self.speed = speed
@@ -30,7 +30,7 @@ class Character_Sprite(sprite.Sprite):
     def set_position(self, CAMERA_X, CAMERA_Y):
         self.rect.x, self.rect.y = self.x-CAMERA_X, self.y-CAMERA_Y
     @property
-    def image(self):
+    def image(self):                                                   #propiedad de la imagen. cambia con un ciclo dependiendo el walk_frame
         if self.__image not in self.animation_list[self.going]:
             self.__image = next(self.animations[self.going])
             self.walk_frame = 1
@@ -57,7 +57,7 @@ class Character_Sprite(sprite.Sprite):
                 a.set_colorkey((0,0,0))
         return animation_list
 
-    def move(self):
+    def move(self): #implementar
         pass
 
     def update(self, CAMERA_X, CAMERA_Y):
@@ -66,7 +66,7 @@ class Character_Sprite(sprite.Sprite):
 
 
 
-class Item_Sprite(sprite.Sprite):       #Rehacer i think
+class Item_Sprite(sprite.Sprite):       #Rehacer i think, yo también pienso lo mismo
     def __init__(self, img_pth, parent, speed = 30):
         super().__init__()
         self.speed = speed

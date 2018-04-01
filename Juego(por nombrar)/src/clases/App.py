@@ -9,7 +9,10 @@ from Sprites import *
 from ImageProcessing import *
 from settings import *
 from ambiente import *
-
+"""
+Este módulo es para que hagamos la clase App,
+por hoy estpa de forma muy primitiva, hay que hacerla de nuevo
+"""
 def initTest(App, W, H, FOG):
     App.player = Character_Sprite("player", 5)
 
