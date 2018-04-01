@@ -28,6 +28,9 @@ Igual podemos empezar construyendo un sistema de batalla simple, y después lo p
 concepto historia:
   entes poseen personar y se vuelven agresivos (hacer la historia alrededor de eso), pueden deformar la realidad(estilo Breath of the Wild).
 
+concepto plataformer:
+  la dimensión de los demonios
+
 historia estructural:
   personajes
   |____arcos
