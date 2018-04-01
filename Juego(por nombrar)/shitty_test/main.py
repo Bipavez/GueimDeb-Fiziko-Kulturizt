@@ -357,7 +357,7 @@ while running:
                         collision = True
                         break
                 if 0 <= pos1[1] - pos2[1] + player.height <= id_npc.height:
-                    if 0 <= pos1[2] - pos2[2] <= id_npc.depth:
+                    if 0 <= pos1[2] - pos2[2] < id_npc.depth:
                         collision = True
                         break
                     if 0 <= pos1[2] - pos2[2] + player.depth <= id_npc.depth:
