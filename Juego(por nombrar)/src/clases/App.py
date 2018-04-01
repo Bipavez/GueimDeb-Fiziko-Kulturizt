@@ -89,7 +89,10 @@ class App:
         #Event handling
         handle_keys(self.player)
         events()
-
+        if self.Points:
+            pg.draw.line(self.screen, (255,255,255),
+                         [self.player.rect.centerx+self.player.corrections[0], self.player.rect.centery+self.player.corrections[1]],
+                         [self.fire.rect.centerx, self.fire.rect.centery], 5)
 
         ##
 

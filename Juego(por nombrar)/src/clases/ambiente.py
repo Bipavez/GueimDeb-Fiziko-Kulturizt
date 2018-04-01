@@ -9,6 +9,11 @@ import numpy as np
 from settings import *
 from ImageProcessing import *
 from glob import glob
+def delta(t, x0, x):
+    if x == x0:
+        return t
+    else:
+        return t*(math.sin(x)+math.cos(x))
 class circle(pg.sprite.Sprite):
     def __init__(self, xy, radius, id, surface):
         super().__init__()
@@ -86,21 +91,30 @@ class fuenteLuz(pg.sprite.Sprite):
         obj = pg.sprite.spritecollideany(self, self.lightable)
 
         if obj != None:
-            Vect = np.array([self.rect.centerx-obj.rect.centerx,
-                             self.rect.centery-obj.rect.centery
+            objX = obj.rect.centerx+obj.corrections[0]
+            objY = obj.rect.centery+obj.corrections[1]
+            Vect = np.array([self.rect.centerx-objX,
+                             self.rect.centery-objY
                             ])
-            E_1 = np.array([0,1])
+            E_1 = np.array([1,0])
 
             norm = np.linalg.norm(Vect)
-            print(obj.x, self.x)
-            angle = math.acos(np.dot(E_1, Vect/norm)) if obj.rect.centerx > self.rect.centerx else -math.acos(np.dot(E_1, Vect/norm))
+            angle = math.acos(np.vdot(E_1, Vect/norm)) if objY < self.rect.centery else -math.acos(np.vdot(E_1, Vect/norm))
             rnorm = int(round(norm))^2
+            angleShadow = angle - np.radians(90)
+            angle -= np.radians(180)
+            angle = -angle
+            print(np.degrees(angle), delta(-30, math.pi/4, angle))
             if norm <= self.radius:
                 alpha = 50/rnorm*255 if norm != 0 else 0
-                shadow = Shadow(obj, alpha, angle )
+                shadow = Shadow(obj, alpha, angleShadow)
+                xOffset, yOffset = 0, 0
+                if angle >= 0 and angle < math.pi/2:
+                    xOffset = math.cos(angle)*shadow.corrections[0]+delta(-15, math.pi/4, angle)
+                    yOffset = math.cos(angle)*shadow.corrections[1]+delta(-15, math.pi/4, angle)
                 d = pg.display.get_surface()
 
-                d.blit(shadow.image, (obj.rect.x+10-10*math.cos(angle), obj.rect.y-10*math.sin(angle)))
+                d.blit(shadow.image, (obj.rect.x + xOffset , obj.rect.y + yOffset))
                 d.blit(obj.image, (obj.rect.x, obj.rect.y))
 
                 del shadow

@@ -19,8 +19,10 @@ class Character_Sprite(sprite.Sprite):
         self.walk_frame = 1
         self.going = "WALK_D"
         imageRect = self.image.get_rect()
-        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
-        self.rect = self.image.get_rect(center = (self.image.get_rect()[2]/2, self.image.get_rect()[3]))
+        self.rect = imageRect
+        shape  = pg.surfarray.array3d(self.__image).shape
+        w, h , c = shape
+        self.corrections = (0,h/2)
         self.x = 0
         self.y = 0
         self.speed = speed

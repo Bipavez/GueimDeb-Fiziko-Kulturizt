@@ -44,6 +44,13 @@ class Shadow(sprite.Sprite):
             self.rect = self.image.get_rect()
         except:
             self.rect = self.parent.image.get_rect()
+        w, h, c = pg.surfarray.array3d(self.image).shape
+        self.__corrections = [w/2, h/2]
+    @property
+    def corrections(self):
+        w, h, c = pg.surfarray.array3d(self.image).shape
+        self.__corrections = [w/2, h/2]
+        return self.__corrections
     @property
     def array(self):
         return pg.surfarray.pixels3d(self.parent.image if self.rect.y < self.parent.rect.y else pg.transform.flip(self.parent.image,True, False))
