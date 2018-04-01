@@ -1,0 +1,32 @@
+Personaje principal:
+  mujer
+  comparte cuerpo con un ente
+  neutral
+  pasado feo(idk)
+  algo de privilegios dentro de su comunidad
+
+Setting:
+  nordico
+  very nature-y
+  comunidad religiosa o pesudo
+  comunidad con un sistema politico descentralizado
+  union con los animales y las plantas, ambientalista
+  YES; nihilism too(idk how)
+  Algunos miembros déspotas, algunos fanáticos religiosos otros escepticos
+  rape is common,  as is personal issues (solo para ejemplificar)
+  disease is also common
+  comunion con los entes
+Priest(char):
+    fanático
+    va perdiendo su fé
+    no importa lo que pase, termina entendiendo su fé desde otro sentido mas comunitario
+    he probably dies
+Friend(char):
+  te ayuda pero queda inhabilitad@ dado tu error
+  tener la opcion de ayudar a curar o dejar sol@ en ambos casos muere, cuestionando la prevencion del suceso
+  Very somewhat low, esceptic@
+Sister(char):
+  Very upbeat
+  problemas hermanales
+  problemas con su familia
+  (no sé todavia)
