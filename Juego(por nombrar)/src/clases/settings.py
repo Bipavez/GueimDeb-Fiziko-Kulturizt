@@ -1,2 +1,2 @@
-W = 700     #Screen width
-H = 500     #Screen height
+W = 1280     #Screen width
+H = 800    #Screen height

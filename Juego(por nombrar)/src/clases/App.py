@@ -14,7 +14,8 @@ def initTest(App, W, H, FOG):
     App.player = Character_Sprite("player", 5)
     App.p_l, App.p_h = App.player.rect.width, App.player.rect.height
     App.player.x, App.player.y = W//2 - App.p_l//2, H//2 - App.p_h//2 #Cambiar, limpiar
-
+    App.FOG = FOG
+    App.fog = draw_fog(App.size, App.FOG)
     App.ball = Item_Sprite("ball", App.player)
     App.npc = Character_Sprite("player",0)
     App.npc.x, App.npc.y = 400,300
@@ -22,12 +23,11 @@ def initTest(App, W, H, FOG):
     App.player_entities = sprite.Group(App.shadow, App.player, App.ball)
     App.background_entities = sprite.Group(App.npc)
     App.collision_entities = sprite.Group(App.player, App.npc)
-    App.CAMERA_X = App.player.x - W//2 + p_l//2
-    App.CAMERA_Y = App.player.y - H//2 + p_h//2
+    App.CAMERA_X = App.player.x - W//2 + App.p_l//2
+    App.CAMERA_Y = App.player.y - H//2 + App.p_h//2
     pg.mixer.music.load("music/theme2.mid")
     pg.mixer.music.play()
-    if FOG != 0:
-        App.fog = draw_fog((W,H), FOG)
+
 
 class App:
     def __init__(self, size, backgroundPath, sprites):
@@ -41,21 +41,24 @@ class App:
         self.fps = self.clock.get_fps()
     def initPg(self):
         pg.init()
-        self.screen = pg.display.set_mode(self.size)
+        pg.font.init()
+        self.font = pg.font.SysFont("Comic Sans MS", 30)
+        self.text = self.font.render(str(self.clock.get_fps()), False, (0,0,0))
+        self.screen = pg.display.set_mode(self.size, pg.FULLSCREEN)
         self.background = pg.image.load(self.backgroundPath)
     def mainLoop(self):
         self.initPg()
-        initTest(self, self.width, self.height, 1)
+        initTest(self, self.width, self.height, 0)
         while True:
             #Screen filling
-
+            self.text = self.font.render(str(round(self.clock.get_fps())), False, (255,255,255))
             self.screen.fill((0,0,0))
             self.screen.blit(self.background, (-self.CAMERA_X,-self.CAMERA_Y, self.width, self.height))
-
-            player_entities.draw(self.screen)
-            background_entities.draw(self.screen)
-            if FOG != 0:
-                self.screen.blit(fog, (0,0))
+            self.screen.blit(self.text, (0,0))
+            self.player_entities.draw(self.screen)
+            self.background_entities.draw(self.screen)
+            if self.FOG != 0:
+                self.screen.blit(self.fog, (0,0))
             ##
             Points = False
 
@@ -81,11 +84,9 @@ class App:
             self.player_entities.update(self.CAMERA_X, self.CAMERA_Y)
             self.background_entities.update(self.CAMERA_X, self.CAMERA_Y)
 
-            self.clock.tick(40)
-            pg.display.set_caption("{}".format(self.fps))
+            self.clock.tick(60)
+            pg.display.set_caption("{}".format(self.clock.get_fps()))
 
             self.CAMERA_X = self.player.x - self.width//2 + self.p_l//2
             self.CAMERA_Y = self.player.y - self.height//2 + self.p_h//2
             pg.display.update()
-App1 = App((1960, 1600), "animations/background.png", [])
-App1.mainLoop()
