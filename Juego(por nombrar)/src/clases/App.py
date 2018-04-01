@@ -44,7 +44,7 @@ class App:
         pg.font.init()
         self.font = pg.font.SysFont("Comic Sans MS", 30)
         self.text = self.font.render(str(self.clock.get_fps()), False, (0,0,0))
-        self.screen = pg.display.set_mode(self.size, pg.FULLSCREEN)
+        self.screen = pg.display.set_mode(self.size)
         self.background = pg.image.load(self.backgroundPath)
     def mainLoop(self):
         self.initPg()
