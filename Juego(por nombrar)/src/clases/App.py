@@ -39,6 +39,7 @@ class App:
         self.backgroundPath = backgroundPath
         self.clock = pg.time.Clock()
         self.fps = self.clock.get_fps()
+        self.initialized = False
     def initPg(self):
         pg.init()
         pg.font.init()
@@ -47,46 +48,48 @@ class App:
         self.screen = pg.display.set_mode(self.size)
         self.background = pg.image.load(self.backgroundPath)
     def mainLoop(self):
-        self.initPg()
-        initTest(self, self.width, self.height, 0)
-        while True:
+        if not self.initialized:
+            self.initPg()
+            initTest(self, self.width, self.height, 0)
+            self.initialized = True
+
             #Screen filling
-            self.text = self.font.render(str(round(self.clock.get_fps())), False, (255,255,255))
-            self.screen.fill((0,0,0))
-            self.screen.blit(self.background, (-self.CAMERA_X,-self.CAMERA_Y, self.width, self.height))
-            self.screen.blit(self.text, (0,0))
-            self.player_entities.draw(self.screen)
-            self.background_entities.draw(self.screen)
-            if self.FOG != 0:
-                self.screen.blit(self.fog, (0,0))
-            ##
-            Points = False
+        self.text = self.font.render(str(round(self.clock.get_fps())), False, (255,255,255))
+        self.screen.fill((0,0,0))
+        self.screen.blit(self.background, (-self.CAMERA_X,-self.CAMERA_Y, self.width, self.height))
+        self.screen.blit(self.text, (0,0))
+        self.player_entities.draw(self.screen)
+        self.background_entities.draw(self.screen)
+        if self.FOG != 0:
+            self.screen.blit(self.fog, (0,0))
+        ##
+        Points = False
 
-            keys = pg.key.get_pressed()
-            if keys[pg.K_p]:
-                if Points is True:
-                    Points = False
-                elif Points is False:
-                    Points = True
-            if Points:
-                pg.draw.circle(self.screen, (255,255,255), (self.player.rect.centerx, self.player.rect.centery), 5)
-                pg.draw.circle(self.screen, (255,255,255), (self.shadow.rect.centerx, self.shadow.rect.centery), 5)
-            #Event handling
-            handle_keys(self.player)
-            for event in pg.event.get():
-                if event.type is pg.QUIT:
-                    pg.quit() # quit the screen
-                    break
+        keys = pg.key.get_pressed()
+        if keys[pg.K_p]:
+            if Points is True:
+                Points = False
+            elif Points is False:
+                Points = True
+        if Points:
+            pg.draw.circle(self.screen, (255,255,255), (self.player.rect.centerx, self.player.rect.centery), 5)
+            pg.draw.circle(self.screen, (255,255,255), (self.shadow.rect.centerx, self.shadow.rect.centery), 5)
+        #Event handling
+        handle_keys(self.player)
+        for event in pg.event.get():
+            if event.type is pg.QUIT:
+                pg.quit() # quit the screen
+                break
 
 
-            ##
+        ##
 
-            self.player_entities.update(self.CAMERA_X, self.CAMERA_Y)
-            self.background_entities.update(self.CAMERA_X, self.CAMERA_Y)
+        self.player_entities.update(self.CAMERA_X, self.CAMERA_Y)
+        self.background_entities.update(self.CAMERA_X, self.CAMERA_Y)
 
-            self.clock.tick(60)
-            pg.display.set_caption("{}".format(self.clock.get_fps()))
+        self.clock.tick(60)
+        pg.display.set_caption("{}".format(self.clock.get_fps()))
 
-            self.CAMERA_X = self.player.x - self.width//2 + self.p_l//2
-            self.CAMERA_Y = self.player.y - self.height//2 + self.p_h//2
-            pg.display.update()
+        self.CAMERA_X = self.player.x - self.width//2 + self.p_l//2
+        self.CAMERA_Y = self.player.y - self.height//2 + self.p_h//2
+        pg.display.update()
