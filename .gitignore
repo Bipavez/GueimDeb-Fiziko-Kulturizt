@@ -99,3 +99,19 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+GDX*
+New*
+
+.vs
+Scenes*
+Tiny*
+*.meta
+Library
+obj
+Packages
+ProyectSettings
+Temp
+Assembly*
+*.sln
+Proyect*
