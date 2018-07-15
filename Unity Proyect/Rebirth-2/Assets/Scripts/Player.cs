@@ -11,20 +11,26 @@ public class Player : Character {
 	}
 
 	// Update is called once per frame
-	void Update() {
+
+	protected override void Update()
+	{
 		GetInput();
-		Move();
+		base.Update();
 	}
 
-	public void GetInput() {
+	public void GetInput()
+	{
 		direction = Vector2.zero;
-		if (Input.GetKey(KeyCode.W)) {
+		if (Input.GetKey(KeyCode.W))
+		{
 			direction += Vector2.up;
 		}
-		if (Input.GetKey(KeyCode.S)) {
+		if (Input.GetKey(KeyCode.S))
+		{
 			direction += Vector2.down;
 		}
-		if (Input.GetKey(KeyCode.D)) {
+		if (Input.GetKey(KeyCode.D))
+		{
 			direction += Vector2.right;
 		}
 		if (Input.GetKey(KeyCode.A)) {
