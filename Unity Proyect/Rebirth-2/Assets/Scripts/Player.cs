@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingScript : MonoBehaviour {
+public class Player : Character {
 
-	[SerializeField]
-	private float speed;
 
-	private Vector2 direction;
 	// Use this for initialization
 	void Start() {
 		direction = Vector2.zero;
@@ -16,11 +13,9 @@ public class MovingScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		GetInput();
-		MovePlayer();
+		Move();
 	}
-  public void MovePlayer() {
-			transform.Translate(direction*speed*Time.deltaTime);
-	}
+
 	public void GetInput() {
 		direction = Vector2.zero;
 		if (Input.GetKey(KeyCode.W)) {
