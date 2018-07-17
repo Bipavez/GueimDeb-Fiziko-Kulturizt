@@ -11,9 +11,10 @@ public class Player : Character {
 
     private Vector2 lastMoved;
 
-   
-	// Use this for initialization
-	void Start() {
+    private Vector2 new_dir;
+
+    // Use this for initialization
+    void Start() {
 		direction = Vector2.zero;
         anim = GetComponent<Animator>();
 	}
@@ -31,39 +32,29 @@ public class Player : Character {
         playerWalking = false;
 		direction = Vector2.zero;
         
-
-
-		if (Input.GetKey(KeyCode.W))
-		{
-			direction += Vector2.up;
-            playerWalking = true;
-            lastMoved = new Vector2(direction.x, direction.y);
-
-        }
-        if (Input.GetKey(KeyCode.S))
-		{
-			direction += Vector2.down;
-            playerWalking = true;
-            lastMoved = new Vector2(direction.x, direction.y);
-        }
-		if (Input.GetKey(KeyCode.D))
-		{
-			direction += Vector2.right;
-
-            playerWalking = true;
-            lastMoved = new Vector2(direction.x, direction.y);
-        }
-        if (Input.GetKey(KeyCode.A))
+        
+        if (Input.GetAxisRaw("Vertical") != 0)
         {
-            direction += Vector2.left;
+            new_dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+            direction += new_dir;
+        }
+        if (Input.GetAxisRaw("Horizontal") != 0)
+        {
+            new_dir = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+            direction += new_dir;
+        }
+        if (direction.magnitude != 0)
+        {
             playerWalking = true;
             lastMoved = new Vector2(direction.x, direction.y);
-        }
 
+        }
+        
+        // Cambiar a algun input predefinido
         if (Input.GetKeyDown(KeyCode.Space))
         {
             anim.SetTrigger("Attack");
-            base.speedMod = 0.0001f;
+            base.speedMod = 0.01f;
 
         }
         
